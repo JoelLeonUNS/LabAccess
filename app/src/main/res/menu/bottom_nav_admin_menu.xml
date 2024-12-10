@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_access_cards"
+        android:icon="@drawable/ic_add_card"
+        android:title="@string/title_access_cards" />
+
+    <item
+        android:id="@+id/navigation_assign_labs"
+        android:icon="@drawable/ic_assignment_add"
+        android:title="@string/title_assign_labs" />
+
+    <item
+        android:id="@+id/navigation_access_history"
+        android:icon="@drawable/ic_work_history"
+        android:title="@string/title_access_history" />
+
+   <item
+       android:id="@+id/navigation_lab_usage"
+       android:icon="@drawable/ic_area_chart"
+       android:title="@string/title_lab_usage" />
+
+    <item
+        android:id="@+id/navigation_user_management"
+        android:icon="@drawable/ic_person_add"
+        android:title="@string/title_user_management" />
+</menu>

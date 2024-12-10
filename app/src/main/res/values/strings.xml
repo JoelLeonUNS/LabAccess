@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">LabAccess</string>
+    <string name="title_home">Home</string>
+    <string name="title_access_log">Escanear</string>
+    <string name="title_settings">Configuraciones</string>
+
+    <string name="title_access_cards">Tarjetas</string>
+    <string name="title_assign_labs">Laboratorios</string>
+    <string name="title_access_history">Historial</string>
+    <string name="title_lab_usage">Usos</string>
+    <string name="title_user_management">Administrar</string>
+</resources>
