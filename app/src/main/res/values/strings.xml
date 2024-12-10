@@ -9,4 +9,6 @@
     <string name="title_access_history">Historial</string>
     <string name="title_lab_usage">Usos</string>
     <string name="title_user_management">Administrar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
