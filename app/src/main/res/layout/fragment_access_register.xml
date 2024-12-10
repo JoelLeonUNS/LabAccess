@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".view.AccessRegisterFragment">
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registro de Accesos"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"/>
+
+    <!-- Escaneo NFC -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <EditText
+            android:id="@+id/etNfcId"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:hint="ID NFC"
+            android:layout_marginTop="8dp"
+            android:inputType="text"
+            android:focusable="false"
+            android:background="@drawable/edit_text_background"/>
+
+        <Button
+            android:id="@+id/btnSimulateScan"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Simular Escaneo NFC"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/black"/>
+
+        <Button
+            android:id="@+id/btnRegisterAccess"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Registrar Acceso"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/black"/>
+    </LinearLayout>
+
+    <!-- Tabla de registros -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp">
+
+        <TableLayout
+            android:id="@+id/tableLogs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*">
+
+            <!-- Encabezado -->
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Docente"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Laboratorio"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Entrada"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Salida"
+                    android:textStyle="bold"/>
+            </TableRow>
+
+        </TableLayout>
+    </ScrollView>
+
+</LinearLayout>
