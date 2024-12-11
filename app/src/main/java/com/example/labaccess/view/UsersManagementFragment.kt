@@ -5,56 +5,46 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.labaccess.R
+import com.example.labaccess.adapter.TeacherAdapter
+import com.example.labaccess.databinding.FragmentUsersManagementBinding
+import com.example.labaccess.view.dialogs.AddTeacherDialog
+import com.example.snapchance.viewModel.TeacherViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [UsersManagementFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class UsersManagementFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentUsersManagementBinding
+    private val viewModel: TeacherViewModel by lazy {
+        ViewModelProvider(requireActivity())[TeacherViewModel::class.java]}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_users_management, container, false)
+    ): View {
+        binding = FragmentUsersManagementBinding.inflate(inflater, container, false)
+
+        // Configurar el RecyclerView
+        val recyclerView = binding.recyclerViewAdmins
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        // Observa los docentes en el ViewModel
+        viewModel.teachers.observe(viewLifecycleOwner) { teachers ->
+            if (teachers != null) {
+                val adapter = TeacherAdapter(teachers)
+                recyclerView.adapter = adapter
+            }
+        }
+
+        // Cargar datos de docentes
+        viewModel.fetchAllTeachers()
+
+        binding.btnAddAdmin.setOnClickListener {
+            val dialogFragment = AddTeacherDialog()
+            dialogFragment.show(parentFragmentManager, "AddTeacherDialogFragment")
+        }
+        return  binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UsersManagementFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UsersManagementFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }

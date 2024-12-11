@@ -12,6 +12,18 @@ class TeacherRepository {
     private val db = FirebaseFirestore.getInstance()
     private val teacherCollection = db.collection("teachers")
 
+
+    suspend fun addNewTeacher(userData: Map<String, Any?>): Boolean {
+        return try {
+            teacherCollection.document().set(userData).await()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+
     // Actualizar un teacher
     suspend fun updateTeacher(teacherId: String, updatedFields: Map<String, Any?>): Boolean {
         return try {

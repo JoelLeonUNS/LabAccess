@@ -29,9 +29,15 @@ class TeacherViewModel: ViewModel() {
     private val _state = MutableLiveData<String>()
     val state: LiveData<String> get() = _state
 
+    private val _password = MutableLiveData<String>()
+    val password: LiveData<String> get() = _password
+
     // LiveData para el resultado de la actualización
     private val _updateResult = MutableLiveData<Boolean?>()
     val updateResult: LiveData<Boolean?> get() = _updateResult
+
+    private val _createResult = MutableLiveData<Boolean?>()
+    val createResult: LiveData<Boolean?> get() = _createResult
 
     // Método para actualizar el nombre
     fun updateName(name: String) {
@@ -46,6 +52,10 @@ class TeacherViewModel: ViewModel() {
     // Método para actualizar el estado
     fun updateState(state: String) {
         _state.value = state
+    }
+
+    fun updatePassword(password: String) {
+        _password.value = password
     }
 
     // Método para obtener los datos de un teacher
@@ -71,6 +81,22 @@ class TeacherViewModel: ViewModel() {
         }
     }
 
+    fun addTeacher() {
+        val fields = mapOf(
+            "name" to _name.value,
+            "email" to _email.value,
+            "password" to _password.value,
+            "state" to _state.value
+        )
+        viewModelScope.launch {
+            val result = repository.addNewTeacher(fields)
+            _createResult.value = result
+            if (result) {
+                fetchAllTeachers()
+            }
+        }
+    }
+
     // Método para actualizar los datos del trabajador
     fun saveTeacher(teacherId: String) {
         val fields = mapOf(
@@ -86,6 +112,10 @@ class TeacherViewModel: ViewModel() {
 
     fun resetResult() {
         _updateResult.value = null
+    }
+
+    fun resetCreateResult() {
+        _createResult.value = null
     }
 
 }

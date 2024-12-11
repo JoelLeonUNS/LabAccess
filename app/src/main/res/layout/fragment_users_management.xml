@@ -6,54 +6,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/backgroundColor"
+    >
 
+    <!-- Título principal -->
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Gestión de Usuarios"
-        android:textColor="@color/black"
-        android:textSize="22dp"
-        android:textStyle="bold" />
-    <!-- Botón para agregar administrador -->
+        android:textColor="@color/primaryTextColor"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingBottom="16dp" />
+
+    <!-- Botón para agregar docente -->
     <Button
         android:id="@+id/btnAddAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_gravity="start"
-        android:backgroundTint="@color/black"
-        android:text="Agregar Administrador"
-        android:textColor="@color/white" />
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="end"
+        android:backgroundTint="@color/primaryColor"
+        android:text="Agregar Docente"
+        android:textColor="@android:color/white"
+        android:elevation="4dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp" />
 
     <!-- Título de la tabla -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal">
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        android:background="@color/primaryColor"
+        android:padding="12dp"
+        android:elevation="2dp"
+        android:layout_marginHorizontal="4dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Nombre"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Email"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Estado"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <!-- RecyclerView para la lista -->
@@ -61,6 +83,9 @@
         android:id="@+id/recyclerViewAdmins"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp" />
+        android:layout_marginHorizontal="4dp"
+        android:clipToPadding="false"
+        android:padding="8dp"
+        android:scrollbars="vertical" />
 
 </LinearLayout>

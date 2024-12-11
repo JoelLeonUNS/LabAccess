@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_lab_use">
+    app:startDestination="@+id/navigation_users_management">
     <fragment
         android:id="@+id/navigation_access_cards"
         android:name="com.example.labaccess.view.fragments.AccessCardsFragment"
