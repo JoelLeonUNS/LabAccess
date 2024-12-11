@@ -50,6 +50,23 @@ class TeacherRepository {
         }
     }
 
+    suspend fun getAllTeachers(): List<Teacher> {
+        return try {
+            // Obtener todos los documentos de la colección
+            Log.d("TeacherRepository", "getAllTeachers")
+            val snapshot = teacherCollection.get().await()
+            Log.d("TeacherRepository", "getAllTeachers: $snapshot")
+            snapshot.documents.mapNotNull { document ->
+                val teacher = document.toObject(Teacher::class.java) ?: return@mapNotNull null
+                teacher.copy(id = document.id)
+            } // Asignar la id del documento al objeto
+        } catch (e: Exception) {
+            Log.e("TeacherRepository", "Error al obtener los docentes: ${e.message}")
+            e.printStackTrace()
+            emptyList()
+        }
+    }
+
     // Obtener lista de cards
     suspend fun getAccessCards(teacherId: String): List<AccessCard>? {
         val teacher = getTeacher(teacherId)

@@ -1,8 +1,10 @@
 package com.example.snapchance.viewModel
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.labaccess.model.data.Teacher
 import com.example.labaccess.model.repo.TeacherRepository
 import kotlinx.coroutines.launch
 
@@ -10,6 +12,10 @@ class TeacherViewModel: ViewModel() {
 
     // Repositorio para manejar los datos del trabajador
     private val repository = TeacherRepository()
+
+    // Lista observable de profesores
+    private val _teachers = MutableLiveData<List<Teacher>>()
+    val teachers: LiveData<List<Teacher>> get() = _teachers
 
     // LiveData para el nombre
     private val _name = MutableLiveData<String>()
@@ -55,6 +61,13 @@ class TeacherViewModel: ViewModel() {
                 _email.value = ""
                 _state.value = ""
             }
+        }
+    }
+
+    fun fetchAllTeachers() {
+        viewModelScope.launch {
+            val teachers = repository.getAllTeachers()
+            _teachers.value = teachers
         }
     }
 

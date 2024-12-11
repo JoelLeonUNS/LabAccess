@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.labaccess.R
 import com.example.labaccess.databinding.FragmentAccessCardsBinding
+import com.example.labaccess.view.dialogs.AddAccessCardDialog
 
 
 class AccessCardsFragment : Fragment() {
@@ -26,8 +27,9 @@ class AccessCardsFragment : Fragment() {
         val teacherId = sharedPreferences.getString("relatedId", null)
 
         binding.fabNewCard.setOnClickListener{
-            // Navegar a la pantalla de agregar nueva tarjeta
-            agregarFila("Nombre", "Apellido", "Estado")
+            // Mostrar diálogo para agregar nueva tarjeta
+            val dialog = AddAccessCardDialog()
+            dialog.show(parentFragmentManager, "AddAccessCardDialog")
         }
 
         // Agregar filas iniciales

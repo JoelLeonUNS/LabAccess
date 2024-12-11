@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="24dp"
+    app:cardBackgroundColor="@color/material_dynamic_secondary100">
+    <LinearLayout
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/dialogTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agregar tarjeta de acceso"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textColor="@color/material_dynamic_secondary10"
+            android:contentDescription="Agregar tarjeta de acceso"
+            android:layout_marginBottom="8dp" />
+        <TextView
+            android:id="@+id/dialogDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Busca un docente y agrega su tarjeta de acceso."
+            android:textSize="14sp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="@color/material_dynamic_secondary40"
+            android:layout_marginBottom="16dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Número de tarjeta"
+            app:boxStrokeColor="@color/material_dynamic_secondary10"
+            android:layout_marginBottom="12dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_card_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:contentDescription="Número de tarjeta"
+                android:textColor="@color/material_dynamic_secondary10" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/select_teacher"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:hint="Docentes"
+            app:boxBackgroundMode="outline">
+            <Spinner
+                android:id="@+id/spinner_teacher"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:spinnerMode="dropdown" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <!-- Botones -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancelar"
+                android:textColor="@color/material_dynamic_secondary10"
+                android:backgroundTint="@android:color/transparent"
+                android:layout_marginEnd="8dp" />
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guardar"
+                android:textColor="@color/material_dynamic_secondary100"
+                android:backgroundTint="@color/material_dynamic_secondary10" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
