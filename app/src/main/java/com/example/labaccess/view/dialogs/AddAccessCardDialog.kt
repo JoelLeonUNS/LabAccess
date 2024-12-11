@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.labaccess.databinding.DialogAddAccessCardBinding
+import com.example.labaccess.model.data.Teacher
 import com.example.snapchance.viewModel.AccessCardViewModel
 import com.example.snapchance.viewModel.TeacherViewModel
 
@@ -43,7 +44,8 @@ class AddAccessCardDialog: DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val sharedPreferences = requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-        val tearcherId = sharedPreferences.getString("relatedId", null)
+        val adminId = sharedPreferences.getString("relatedId", null)
+        var teacherId = ""
 
         viewModel.cardNumber.observe(viewLifecycleOwner) { cardNumber ->
             binding.etCardNumber.setText(cardNumber)
@@ -51,40 +53,38 @@ class AddAccessCardDialog: DialogFragment() {
 
         // Observa los datos desde el ViewModel
         vmTeacher.teachers.observe(viewLifecycleOwner) { teachers ->
-            // Convierte los objetos Teacher a una lista de nombres (o el atributo que quieras mostrar)
-            val teacherNames = teachers.map { it.name } // Cambia 'name' según tu modelo
-
-            // Configura el adaptador para el Spinner
+            // Configura el adaptador para el Spinner utilizando directamente los objetos Teacher
             val adapter = ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
-                teacherNames
+                teachers // Pasa la lista completa de objetos
             )
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.spinnerTeacher.adapter = adapter
         }
 
-        vmTeacher.fetchAllTeachers()
-
         // Configura el listener para obtener el elemento seleccionado
         binding.spinnerTeacher.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedTeacher = parent.getItemAtPosition(position) as String
-                // Aquí puedes trabajar con el nombre seleccionado o buscar el objeto completo
-                Log.d("Spinner", "Seleccionado: $selectedTeacher")
+                // Recupera el objeto Teacher seleccionado utilizando la posición
+                val selectedTeacher = parent.getItemAtPosition(position) as Teacher
+                // Actualiza el id del profesor seleccionado
+                teacherId = selectedTeacher.id
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                // Aquí puedes manejar el caso en que no se seleccione nada, si es necesario
+                // Maneja el caso en que no se selecciona nada
             }
         }
+
+        vmTeacher.fetchAllTeachers()
 
         viewModel.saveResult.observe(viewLifecycleOwner) { success ->
             if (success == true) {
                 Toast.makeText(requireContext(), "Datos guardados correctamente", Toast.LENGTH_SHORT).show()
                 viewModel.resetResult()
                 viewModel.clearCurrentItem()
-                viewModel.fetchAccessCards(tearcherId!!)
+                viewModel.fecthAllTeacherAccessCards()
                 dismiss()
             }
             if(success == false) {
@@ -94,7 +94,7 @@ class AddAccessCardDialog: DialogFragment() {
 
         binding.btnSave.setOnClickListener {
             viewModel.updateCardNumber(binding.etCardNumber.text.toString())
-            viewModel.saveAccessCard(tearcherId!!)
+            viewModel.saveAccessCard(teacherId)
         }
 
         binding.btnCancel.setOnClickListener {

@@ -2,6 +2,7 @@ package com.example.labaccess.view.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -9,14 +10,20 @@ import android.view.ViewGroup
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.labaccess.R
 import com.example.labaccess.databinding.FragmentAccessCardsBinding
 import com.example.labaccess.view.dialogs.AddAccessCardDialog
+import com.example.snapchance.viewModel.AccessCardViewModel
 
 
 class AccessCardsFragment : Fragment() {
 
     private lateinit var binding: FragmentAccessCardsBinding
+
+    private val viewModel: AccessCardViewModel by lazy {
+        ViewModelProvider(requireActivity())[AccessCardViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,9 +39,17 @@ class AccessCardsFragment : Fragment() {
             dialog.show(parentFragmentManager, "AddAccessCardDialog")
         }
 
-        // Agregar filas iniciales
-        agregarFila("Juan", "Pérez", "Activa")
-        agregarFila("María", "Gómez", "Inactiva")
+        // Observa los datos desde el ViewModel
+        viewModel.teacherAccessCards.observe(viewLifecycleOwner) { accessCards ->
+            // Agregar una fila por cada tarjeta
+            Log.d("AccessCardsFragment", "Access cards: $accessCards")
+            accessCards.forEach { accessCard ->
+                agregarFila(accessCard.cardNumber, accessCard.name, accessCard.state)
+            }
+        }
+
+        // Cargar las tarjetas de acceso junto con los datos del docente
+        viewModel.fecthAllTeacherAccessCards()
 
         return binding.root
     }

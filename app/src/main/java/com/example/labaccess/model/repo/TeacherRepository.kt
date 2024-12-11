@@ -3,6 +3,7 @@ package com.example.labaccess.model.repo
 import android.util.Log
 import com.example.labaccess.model.data.AccessCard
 import com.example.labaccess.model.data.Teacher
+import com.example.labaccess.model.data.TeacherAccessCard
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -52,16 +53,12 @@ class TeacherRepository {
 
     suspend fun getAllTeachers(): List<Teacher> {
         return try {
-            // Obtener todos los documentos de la colección
-            Log.d("TeacherRepository", "getAllTeachers")
             val snapshot = teacherCollection.get().await()
-            Log.d("TeacherRepository", "getAllTeachers: $snapshot")
             snapshot.documents.mapNotNull { document ->
                 val teacher = document.toObject(Teacher::class.java) ?: return@mapNotNull null
                 teacher.copy(id = document.id)
-            } // Asignar la id del documento al objeto
+            }
         } catch (e: Exception) {
-            Log.e("TeacherRepository", "Error al obtener los docentes: ${e.message}")
             e.printStackTrace()
             emptyList()
         }
@@ -72,6 +69,64 @@ class TeacherRepository {
         val teacher = getTeacher(teacherId)
         return teacher?.accessCard
     }
+
+    suspend fun getAllAccessCards(): List<AccessCard> {
+        return try {
+            val snapshot = teacherCollection.get().await()
+            snapshot.documents.flatMap { document ->
+                val accessCardSnapshot = teacherCollection.document(document.id)
+                    .collection("accessCard").get().await()
+                accessCardSnapshot.documents.mapNotNull { cardDocument ->
+                    val card = cardDocument.toObject(AccessCard::class.java)
+                    card?.copy(id = cardDocument.id)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
+    }
+
+    // Se tiene que hacer una especie de join con el teacher y la card, y devolverme todas las tarjetas de acceso de cada profesor, con los datos del profesor
+    suspend fun getAllTeacherAccessCards(): List<TeacherAccessCard> {
+        return try {
+            val snapshot = teacherCollection.get().await() // Obtiene todos los documentos de profesores
+            snapshot.documents.flatMap { document ->
+                // Mapea los datos del profesor
+                val teacherId = document.id
+                val teacherName = document.getString("name") ?: ""
+                val teacherEmail = document.getString("email") ?: ""
+                val stateTeacher = document.getString("state") ?: ""
+
+                // Obtiene todas las tarjetas de acceso del profesor
+                val accessCardSnapshot = teacherCollection.document(teacherId)
+                    .collection("accessCard").get().await()
+
+                // Combina los datos de la tarjeta y del profesor en objetos TeacherAccessCard
+                accessCardSnapshot.documents.mapNotNull { cardDocument ->
+                    val card = cardDocument.toObject(AccessCard::class.java)
+                    card?.let {
+                        TeacherAccessCard(
+                            id = cardDocument.id,
+                            cardNumber = it.cardNumber,
+                            state = it.state,
+                            issueDate = it.issueDate,
+                            expiryDate = it.expiryDate,
+                            teacherId = teacherId,
+                            name = teacherName,
+                            email = teacherEmail,
+                            stateTeacher = stateTeacher
+                        )
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("TeacherRepository", "Error: ${e.message}")
+            e.printStackTrace()
+            emptyList()
+        }
+    }
+
 
     // Agregar una nueva card
     suspend fun addAccessCard(teacherId: String, card: AccessCard): Boolean {

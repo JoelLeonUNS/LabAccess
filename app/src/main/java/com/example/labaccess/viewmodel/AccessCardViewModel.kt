@@ -4,7 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.labaccess.model.data.AccessCard
+import com.example.labaccess.model.data.TeacherAccessCard
 import com.example.labaccess.model.repo.TeacherRepository
+import com.google.firebase.Timestamp
 import kotlinx.coroutines.launch
 
 class AccessCardViewModel: ViewModel() {
@@ -12,9 +14,13 @@ class AccessCardViewModel: ViewModel() {
     // Repositorio para manejar las tarjetas de acceso
     private val repository = TeacherRepository()
 
-    // Lista observable de experiencias laborales
+    // Lista observable de cards
     private val _accessCards = MutableLiveData<List<AccessCard>>()
     val accessCards: LiveData<List<AccessCard>> get() = _accessCards
+
+    // Lista observable de cards junto con datos del docente
+    private val _teacherAccessCards = MutableLiveData<List<TeacherAccessCard>>()
+    val teacherAccessCards: LiveData<List<TeacherAccessCard>> get() = _teacherAccessCards
 
     // LiveData para manejar el resultado de guardar datos
     private val _saveResult = MutableLiveData<Boolean?>()
@@ -36,12 +42,12 @@ class AccessCardViewModel: ViewModel() {
     val state: LiveData<String> get() = _state
     
     // LiveData para la fecha de emisión
-    private val _issueDate = MutableLiveData<String>()
-    val issueDate: LiveData<String> get() = _issueDate
+    private val _issueDate = MutableLiveData<Timestamp>()
+    val issueDate: LiveData<Timestamp> get() = _issueDate
     
     // LiveData para la fecha de expiración
-    private val _expiryDate = MutableLiveData<String>()
-    val expiryDate: LiveData<String> get() = _expiryDate
+    private val _expiryDate = MutableLiveData<Timestamp>()
+    val expiryDate: LiveData<Timestamp> get() = _expiryDate
 
     // Métodos para actualizar los atributos del ítem actual
     fun updateId(id: String) {
@@ -59,29 +65,29 @@ class AccessCardViewModel: ViewModel() {
     }
 
     // Método para actualizar la fecha de emisión
-    fun updateIssueDate(issueDate: String) {
+    fun updateIssueDate(issueDate: Timestamp) {
         _issueDate.value = issueDate
     }
 
     // Método para actualizar la fecha de expiración
-    fun updateExpiryDate(expiryDate: String) {
+    fun updateExpiryDate(expiryDate: Timestamp) {
         _expiryDate.value = expiryDate
     }
 
     // Método para guardar (agregar o actualizar) la experiencia laboral actual
-    fun saveAccessCard(workerId: String) {
+    fun saveAccessCard(teacherId: String) {
         val currentItem = AccessCard(
             id = _id.value ?: "",
             cardNumber = _cardNumber.value ?: "",
             state = _state.value ?: "",
-            issueDate = _issueDate.value ?: "",
-            expiryDate = _expiryDate.value ?: ""
+            issueDate = _issueDate.value ?: Timestamp.now(),
+            expiryDate = _expiryDate.value ?: Timestamp.now()
         )
         viewModelScope.launch {
             if (currentItem.id.isNotEmpty()) {
-                _saveResult.value = repository.updateAccessCard(workerId, currentItem)
+                _saveResult.value = repository.updateAccessCard(teacherId, currentItem)
             } else {
-                _saveResult.value = repository.addAccessCard(workerId, currentItem)
+                _saveResult.value = repository.addAccessCard(teacherId, currentItem)
             }
         }
     }
@@ -93,10 +99,22 @@ class AccessCardViewModel: ViewModel() {
         }
     }
 
-    // Método para cargar experiencias laborales de un trabajador
+    // Método para cargar cards de un trabajador
     fun fetchAccessCards(teacherId: String) {
         viewModelScope.launch {
             _accessCards.value = repository.getAccessCards(teacherId)
+        }
+    }
+
+    fun fecthAllAccessCards() {
+        viewModelScope.launch {
+            _accessCards.value = repository.getAllAccessCards()
+        }
+    }
+
+    fun fecthAllTeacherAccessCards() {
+        viewModelScope.launch {
+            _teacherAccessCards.value = repository.getAllTeacherAccessCards()
         }
     }
 
@@ -110,8 +128,8 @@ class AccessCardViewModel: ViewModel() {
         _id.value = ""
         _cardNumber.value = ""
         _state.value = ""
-        _issueDate.value = ""
-        _expiryDate.value = ""
+        _issueDate.value = Timestamp.now()
+        _expiryDate.value = Timestamp.now()
     }
 
 }

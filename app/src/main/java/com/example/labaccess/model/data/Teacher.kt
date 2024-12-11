@@ -6,4 +6,8 @@ data class Teacher(
     val email: String = "",
     val state: String = "",
     val accessCard: List<AccessCard> = listOf(),
-)
+) {
+    override fun toString(): String {
+        return name // Retorna solo el nombre
+    }
+}
