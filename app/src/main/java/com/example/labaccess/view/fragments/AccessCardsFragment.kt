@@ -41,6 +41,10 @@ class AccessCardsFragment : Fragment() {
 
         // Observa los datos desde el ViewModel
         viewModel.teacherAccessCards.observe(viewLifecycleOwner) { accessCards ->
+            // Limpia la vista antes de agregar las nuevas filas
+            binding.tlAccessCards.removeAllViews()
+            // Agregar fila de encabezado
+            agregarEncabezado("ID", "Nombre", "Estado")
             // Agregar una fila por cada tarjeta
             Log.d("AccessCardsFragment", "Access cards: $accessCards")
             accessCards.forEach { accessCard ->
@@ -52,6 +56,44 @@ class AccessCardsFragment : Fragment() {
         viewModel.fecthAllTeacherAccessCards()
 
         return binding.root
+    }
+
+    private fun agregarEncabezado(idTarjeta: String, nombreDocente: String, estado: String) {
+        // La fila oscura y el texto en blanco
+        val nuevaFila = TableRow(context).apply {
+            layoutParams = TableRow.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        } // Crear celdas (TextViews) dinámicamente
+        val celdaId = TextView(context).apply {
+            text = idTarjeta
+            setTextSize(16f)
+            setTextColor(resources.getColor(R.color.white))
+            setPadding(50, 50, 50, 50)
+            gravity = Gravity.CENTER
+        }
+        val celdaNombre = TextView(context).apply {
+            text = nombreDocente
+            setTextSize(16f)
+            setTextColor(resources.getColor(R.color.white))
+            setPadding(50, 50, 50, 50)
+            gravity = Gravity.START
+        }
+        val celdaEstado = TextView(context).apply {
+            text = estado
+            setTextSize(16f)
+            setTextColor(resources.getColor(R.color.white))
+            setPadding(50, 50, 50, 50)
+            gravity = Gravity.CENTER
+        }
+        // Añadir celdas a la fila
+        nuevaFila.addView(celdaId)
+        nuevaFila.addView(celdaNombre)
+        nuevaFila.addView(celdaEstado)
+        nuevaFila.setBackgroundColor(resources.getColor(R.color.black))
+        // Añadir la fila al TableLayout
+        binding.tlAccessCards.addView(nuevaFila)
     }
 
     private fun agregarFila(idTarjeta: String, nombreDocente: String, estado: String) {
@@ -66,19 +108,22 @@ class AccessCardsFragment : Fragment() {
         // Crear celdas (TextViews) dinámicamente
         val celdaId = TextView(context).apply {
             text = idTarjeta
-            setPadding(8, 8, 8, 8)
+            setTextSize(16f)
+            setPadding(40, 40, 40, 40)
             gravity = Gravity.CENTER
         }
 
         val celdaNombre = TextView(context).apply {
             text = nombreDocente
-            setPadding(8, 8, 8, 8)
+            setTextSize(16f)
+            setPadding(40, 40, 40, 40)
             gravity = Gravity.START
         }
 
         val celdaEstado = TextView(context).apply {
             text = estado
-            setPadding(8, 8, 8, 8)
+            setTextSize(16f)
+            setPadding(40, 40, 40, 40)
             gravity = Gravity.CENTER
         }
 

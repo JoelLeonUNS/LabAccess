@@ -79,7 +79,7 @@ class AccessCardViewModel: ViewModel() {
         val currentItem = AccessCard(
             id = _id.value ?: "",
             cardNumber = _cardNumber.value ?: "",
-            state = _state.value ?: "",
+            state = _state.value ?: "Activo",
             issueDate = _issueDate.value ?: Timestamp.now(),
             expiryDate = _expiryDate.value ?: Timestamp.now()
         )
