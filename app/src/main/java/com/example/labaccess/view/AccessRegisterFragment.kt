@@ -97,15 +97,16 @@ class AccessRegisterFragment : Fragment() {
 
         row.addView(createTextView(selectedTeacher?.name ?: "No Docente"))
         row.addView(createTextView(selectedLab?.name ?: "No Laboratorio"))
-        row.addView(createTextView(entryTime?.let { formatTimestamp(it) } ?: "N/A"))  // Mostrar la hora de entrada
-        row.addView(createTextView(exitTime?.let { formatTimestamp(it) } ?: "N/A"))   // Mostrar la hora de salida
+        row.addView(createTextView(entryTime?.let { formatTimestamp(it) } ?: "N/A"))  // Mostrar fecha y hora de entrada
+        row.addView(createTextView(exitTime?.let { formatTimestamp(it) } ?: "N/A"))   // Mostrar fecha y hora de salida
 
         tableLogs.addView(row)
     }
 
     // Método auxiliar para formatear el timestamp en un formato legible
     private fun formatTimestamp(timestamp: Long): String {
-        val dateFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+        // Formato incluye fecha y hora
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         return dateFormat.format(Date(timestamp))
     }
 
@@ -177,9 +178,9 @@ class AccessRegisterFragment : Fragment() {
         }
     }
 
-    // Método para convertir un tiempo en formato HH:mm:ss a un Timestamp
+    // Método para convertir un tiempo en formato "yyyy-MM-dd HH:mm:ss" a un Timestamp
     private fun convertToTimestamp(time: String): Timestamp {
-        val format = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val date = format.parse(time)
         return Timestamp(date)
     }

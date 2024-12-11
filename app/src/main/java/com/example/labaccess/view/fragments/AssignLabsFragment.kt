@@ -48,7 +48,7 @@ class AssignLabsFragment : Fragment() {
         // Observa los datos desde el ViewModel
         viewModel.laboratoryJoin.observe(viewLifecycleOwner) { laboratoryJoin ->
             binding.tlAssignLabs.removeAllViews()
-            agregarEncabezado("Lab", "Docente")
+            agregarEncabezado("Lab", "Docente", "Horario")
             for (lab in laboratoryJoin) {
                 agregarFila(lab)
             }
@@ -60,7 +60,7 @@ class AssignLabsFragment : Fragment() {
         return binding.root
     }
 
-    private fun agregarEncabezado(laboratory:String, teacher:String) {
+    private fun agregarEncabezado(laboratory:String, teacher:String, horario:String) {
         // La fila oscura y el texto en blanco
         val nuevaFila = TableRow(context).apply {
             layoutParams = TableRow.LayoutParams(
@@ -82,9 +82,18 @@ class AssignLabsFragment : Fragment() {
             setPadding(50, 50, 50, 50)
             gravity = Gravity.CENTER
         }
+        val celdaHorario = TextView(context).apply {
+            text = horario
+            setTextSize(16f)
+            setTextColor(resources.getColor(R.color.white))
+            setPadding(50, 50, 50, 50)
+            gravity = Gravity.CENTER
+        }
         // Añadir celdas a la fila
         nuevaFila.addView(celdaLaboratory)
         nuevaFila.addView(celdaTeacher)
+        nuevaFila.addView(celdaHorario)
+
         nuevaFila.setBackgroundColor(resources.getColor(R.color.black))
         // Añadir la fila al TableLayout
         binding.tlAssignLabs.addView(nuevaFila)
@@ -114,10 +123,18 @@ class AssignLabsFragment : Fragment() {
             maxLines = 1
             ellipsize = TextUtils.TruncateAt.END
         }
+        val celdaHorario = TextView(context).apply {
+            text = lab.timeSlot
+            setTextSize(16f)
+            setPadding(40, 40, 40, 40)
+            gravity = Gravity.CENTER
+            maxLines = 1
+            ellipsize = TextUtils.TruncateAt.END
+        }
         // Añadir celdas a la fila
         nuevaFila.addView(celdaLaboratory)
         nuevaFila.addView(celdaTeacher)
-
+        nuevaFila.addView(celdaHorario)
         nuevaFila.setOnClickListener {
             mostrarDialogoDetalle(lab)
         }
