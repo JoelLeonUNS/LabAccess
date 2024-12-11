@@ -57,6 +57,7 @@ class AddAssignLabsDialog: DialogFragment() {
         var courseId = ""
         var laboratoryId = ""
         var timeSlot = ""
+        var dayOfWeek = ""
 
         // Observa los datos desde el ViewModel
         vmTeacher.teachers.observe(viewLifecycleOwner) { teachers ->
@@ -111,7 +112,7 @@ class AddAssignLabsDialog: DialogFragment() {
         }
 
         // Observa los datos desde el ViewModel
-        viewModel.assignments.observe(viewLifecycleOwner) { laboratories ->
+        viewModel.laboratories.observe(viewLifecycleOwner) { laboratories ->
             // Configura el adaptador para el Spinner utilizando directamente los objetos Assignment
             val adapter = ArrayAdapter(
                 requireContext(),
@@ -138,6 +139,7 @@ class AddAssignLabsDialog: DialogFragment() {
 
         // Obtener el horario seleccionado
         timeSlot = binding.spinnerTimeSlot.selectedItem.toString()
+        dayOfWeek = binding.spinnerDayOfWeek.selectedItem.toString()
 
         vmTeacher.fetchAllTeachers()
         vmCourse.fecthAllCourses()
@@ -158,6 +160,7 @@ class AddAssignLabsDialog: DialogFragment() {
 
         binding.btnSave.setOnClickListener {
             viewModel.updateTimeSlot(timeSlot)
+            viewModel.updateDayOfWeek(dayOfWeek)
             viewModel.updateTeacherId(teacherId)
             viewModel.updateCourseId(courseId)
             viewModel.updateId(laboratoryId)

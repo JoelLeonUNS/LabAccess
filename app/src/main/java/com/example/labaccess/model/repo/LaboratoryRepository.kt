@@ -74,9 +74,11 @@ class LaboratoryRepository {
             val snapshot = laboratoryCollection.get().await()
             snapshot.documents.mapNotNull { document ->
                 val laboratory = document.toObject(Laboratory::class.java) ?: return@mapNotNull null
+                Log.d("LaboratoryRepository", "getAllLaboratories: ${laboratory.name}")
                 laboratory.copy(id = document.id)
             }
         } catch (e: Exception) {
+            Log.d("LaboratoryRepository", "getAllLaboratories: ${e.message}")
             e.printStackTrace()
             emptyList()
         }
@@ -95,7 +97,7 @@ class LaboratoryRepository {
 
                 // Obtiene los assignments relacionados con el laboratorio actual
                 val assignmentSnapshot = laboratoryCollection.document(laboratory.id)
-                    .collection("assignment").get().await()
+                    .collection("assignments").get().await()
 
                 assignmentSnapshot.documents.mapNotNull { assignmentDocument ->
                     val assignment = assignmentDocument.toObject(Assignment::class.java)?.copy(id = assignmentDocument.id)

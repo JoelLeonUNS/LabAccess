@@ -21,4 +21,12 @@
         <item>17:00 - 18:30</item>
         <item>18:30 - 20:00</item>
     </string-array>
+    <string-array name="day_of_week_array">
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miércoles</item>
+        <item>Jueves</item>
+        <item>Viernes</item>
+        <item>Sábado</item>
+    </string-array>
 </resources>
