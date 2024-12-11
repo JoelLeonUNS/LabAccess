@@ -26,24 +26,21 @@
         android:layout_marginTop="16dp"
         android:gravity="center_vertical">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilNfcId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            app:hintAnimationEnabled="true"/>
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSimulateScan"
-            android:layout_width="120dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Simular Escaneo NFC"
             android:layout_marginStart="8dp"
+            app:backgroundTint="@color/material_dynamic_secondary20"
             app:iconTint="@android:color/white" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegisterAccess"
-            android:layout_width="120dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            app:backgroundTint="@color/material_dynamic_secondary20"
             android:layout_height="wrap_content"
             android:text="Registrar Acceso"
             android:layout_marginStart="8dp" />
@@ -52,7 +49,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
 

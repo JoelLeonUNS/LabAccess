@@ -35,13 +35,19 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@color/material_dynamic_secondary50" />
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="horizontal">
                 <TableLayout
                     android:id="@+id/tl_assign_labs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:stretchColumns="1">
+                    android:shrinkColumns="*"
+                    android:stretchColumns="*">
                 </TableLayout>
+                </HorizontalScrollView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

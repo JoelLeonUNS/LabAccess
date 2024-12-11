@@ -34,7 +34,6 @@
         android:layout_marginBottom="12dp"
         android:hint="Número de tarjeta"
         app:boxStrokeColor="@color/material_dynamic_secondary10">
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_card_number"
             android:layout_width="match_parent"

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_users_management">
+    app:startDestination="@+id/navigation_access_cards">
     <fragment
         android:id="@+id/navigation_access_cards"
         android:name="com.example.labaccess.view.fragments.AccessCardsFragment"
@@ -14,14 +14,9 @@
         android:label="Asignación de Laboratorios"/>
 
     <fragment
-        android:id="@+id/navigation_users_management"
+        android:id="@+id/navigation_user_management"
         android:name="com.example.labaccess.view.UsersManagementFragment"
         android:label="Gestion de Usuarios"
-        />
-    <fragment
-        android:id="@+id/navigation_access_history"
-        android:name="com.example.labaccess.view.AccessHistoryFragment"
-        android:label="Historial de Accesos"
         />
     <fragment
         android:id="@+id/navigation_lab_usage"

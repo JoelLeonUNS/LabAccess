@@ -10,11 +10,6 @@
         android:icon="@drawable/ic_assignment_add"
         android:title="@string/title_assign_labs" />
 
-    <item
-        android:id="@+id/navigation_access_history"
-        android:icon="@drawable/ic_work_history"
-        android:title="@string/title_access_history" />
-
    <item
        android:id="@+id/navigation_lab_usage"
        android:icon="@drawable/ic_area_chart"

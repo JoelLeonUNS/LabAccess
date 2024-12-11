@@ -16,7 +16,6 @@
         android:textColor="@color/material_dynamic_secondary10"
         android:textSize="20sp"
         android:textStyle="bold" />
-
     <TextView
         android:id="@+id/dialogDescription"
         android:layout_width="wrap_content"
