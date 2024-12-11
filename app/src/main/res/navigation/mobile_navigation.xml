@@ -4,13 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_lab_use">
-
-<!--    <fragment-->
-<!--        android:id="@+id/navigation_home"-->
-<!--        android:name="com.example.labaccess.view.fragments.HomeFragment"-->
-<!--        android:label="@string/title_home"-->
-<!--        tools:layout="@layout/fragment_home" />-->
-
+    <fragment
+        android:id="@+id/navigation_access_cards"
+        android:name="com.example.labaccess.view.fragments.AccessCardsFragment"
+        android:label="Gestión de tarjetas"/>
     <fragment
         android:id="@+id/navigation_lab_use"
         android:name="com.example.labaccess.view.LabUseFragment"

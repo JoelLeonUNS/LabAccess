@@ -36,10 +36,42 @@
                     android:layout_marginBottom="8dp"
                     android:background="@color/material_dynamic_secondary50" />
                 <TableLayout
-                    android:id="@+id/miTabla"
+                    android:id="@+id/tl_access_cards"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:stretchColumns="1" />
+                    android:layout_marginTop="8dp"
+                    android:stretchColumns="1">
+                    <!-- Encabezados -->
+                    <TableRow android:background="#626262">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ID de Tarjeta"
+                            android:padding="8dp"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:textColor="@color/white"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nombre del Docente"
+                            android:padding="8dp"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:textColor="@color/white"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Estado"
+                            android:padding="8dp"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:textColor="@color/white"/>
+                    </TableRow>
+                </TableLayout>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton

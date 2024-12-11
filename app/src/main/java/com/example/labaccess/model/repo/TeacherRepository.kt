@@ -12,7 +12,7 @@ class TeacherRepository {
     private val teacherCollection = db.collection("teachers")
 
     // Actualizar un teacher
-    suspend fun updateTeacher(teacherId: String, updatedFields: Map<String, Any>): Boolean {
+    suspend fun updateTeacher(teacherId: String, updatedFields: Map<String, Any?>): Boolean {
         return try {
             teacherCollection.document(teacherId).update(updatedFields).await()
             true
@@ -50,13 +50,13 @@ class TeacherRepository {
         }
     }
 
-    // Obtener lista de experiencias laborales
+    // Obtener lista de cards
     suspend fun getAccessCards(teacherId: String): List<AccessCard>? {
         val teacher = getTeacher(teacherId)
         return teacher?.accessCard
     }
 
-    // Agregar una nueva experiencia laboral
+    // Agregar una nueva card
     suspend fun addAccessCard(teacherId: String, card: AccessCard): Boolean {
         // Se excluye el atributo id para que Firestore genere uno nueva
         val addCard = mapOf(
@@ -77,7 +77,7 @@ class TeacherRepository {
         }
     }
 
-    // Actualizar una experiencia laboral específica
+    // Actualizar una card específica
     suspend fun updateAccessCard(teacherId: String, card: AccessCard): Boolean {
         val id = card.id
         // No se considera el id en la actualización
@@ -100,7 +100,7 @@ class TeacherRepository {
         }
     }
 
-    // Eliminar una experiencia laboral específica
+    // Eliminar una card específica
     suspend fun removeAccessCard(teacherId: String, id: String): Boolean {
         return try {
             teacherCollection.document(teacherId)
