@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,7 +19,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2"
-            android:padding="8dp">
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
 
             <!-- Fecha Inicio -->
             <LinearLayout
@@ -27,22 +29,26 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Fecha Inicio"
                     android:textSize="16sp"
                     android:textColor="@color/black" />
 
-                <EditText
-                    android:id="@+id/start_date"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Fecha inicio"
-                    android:drawableEnd="@drawable/ic_calendar"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:background="@drawable/edit_text_background" />
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/start_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Fecha inicio"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:focusable="false"
+                        android:clickable="true" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <!-- Fecha Fin -->
@@ -53,22 +59,26 @@
                 android:orientation="vertical"
                 android:layout_marginStart="8dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Fecha Fin"
                     android:textSize="16sp"
                     android:textColor="@color/black" />
 
-                <EditText
-                    android:id="@+id/end_date"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Fecha fin"
-                    android:drawableEnd="@drawable/ic_calendar"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:background="@drawable/edit_text_background" />
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/end_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Fecha fin"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:focusable="false"
+                        android:clickable="true" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -78,7 +88,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2"
-            android:padding="8dp">
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
 
             <!-- Docente -->
             <LinearLayout
@@ -87,18 +98,22 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Docente"
                     android:textSize="16sp"
                     android:textColor="@color/black" />
 
-                <Spinner
-                    android:id="@+id/teacher_spinner"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_background" />
+                    android:layout_height="wrap_content">
+
+                    <Spinner
+                        android:id="@+id/teacher_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <!-- Laboratorio -->
@@ -109,18 +124,22 @@
                 android:orientation="vertical"
                 android:layout_marginStart="8dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Laboratorio"
                     android:textSize="16sp"
                     android:textColor="@color/black" />
 
-                <Spinner
-                    android:id="@+id/lab_spinner"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_background" />
+                    android:layout_height="wrap_content">
+
+                    <Spinner
+                        android:id="@+id/lab_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -132,14 +151,13 @@
             android:layout_gravity="center"
             android:padding="8dp">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_filter"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Filtrar"
-                android:backgroundTint="@color/black" />
-
+                app:cornerRadius="8dp" />
         </LinearLayout>
 
         <!-- Tabla de Registros -->
@@ -148,32 +166,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:stretchColumns="*"
-            android:padding="8dp">
+            android:padding="16dp">
 
             <!-- Encabezados -->
             <TableRow>
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Docente"
                     android:textStyle="bold"
                     android:padding="8dp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Laboratorio"
                     android:textStyle="bold"
                     android:padding="8dp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Entrada"
                     android:textStyle="bold"
                     android:padding="8dp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Salida"

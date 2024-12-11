@@ -7,23 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.labaccess.R
-import java.text.SimpleDateFormat
+import com.example.labaccess.model.data.AccessLog
+import com.example.labaccess.viewmodel.AccessHistoryViewModel
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.Timestamp
+import java.util.Calendar
 import java.util.*
 
 class AccessHistoryFragment : Fragment() {
 
-    private lateinit var startDateEditText: EditText
-    private lateinit var endDateEditText: EditText
-    private lateinit var teacherSpinner: Spinner
-    private lateinit var labSpinner: Spinner
-    private lateinit var filterButton: Button
-    private lateinit var recordsTable: TableLayout
-
-    private val records = mutableListOf(
-        Record("Juan Pérez", "Lab A", "2023-05-01 09:00", "2023-05-01 10:30"),
-        Record("María García", "Lab B", "2023-05-01 11:00", "2023-05-01 12:30")
-    )
+    private lateinit var viewModel: AccessHistoryViewModel
+    private lateinit var startDateEditText: TextInputEditText
+    private lateinit var endDateEditText: TextInputEditText
+    private lateinit var accessLogsTable: TableLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,116 +29,164 @@ class AccessHistoryFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_access_history, container, false)
 
+        // Inicializar el ViewModel
+        viewModel = ViewModelProvider(this)[AccessHistoryViewModel::class.java]
+
+        // Configurar observadores para el ViewModel
+        setupObservers(view)
+
+        // Obtener referencias a los EditText para las fechas
         startDateEditText = view.findViewById(R.id.start_date)
         endDateEditText = view.findViewById(R.id.end_date)
-        teacherSpinner = view.findViewById(R.id.teacher_spinner)
-        labSpinner = view.findViewById(R.id.lab_spinner)
-        filterButton = view.findViewById(R.id.btn_filter)
-        recordsTable = view.findViewById(R.id.records_table)
 
-        setupDatePickers()
-        setupSpinners()
-        setupButtons()
-        populateTable(records)
+        // Configurar el DatePicker para las fechas de inicio y fin
+        setupDatePicker(startDateEditText)
+        setupDatePicker(endDateEditText)
+
+        // Referencia al TableLayout para mostrar los registros
+        accessLogsTable = view.findViewById(R.id.records_table)
 
         return view
     }
 
-    private fun setupDatePickers() {
-        val datePickerListener = { editText: EditText ->
-            val calendar = Calendar.getInstance()
-            val datePicker = DatePickerDialog(
+    private fun setupObservers(view: View) {
+        val teacherSpinner = view.findViewById<Spinner>(R.id.teacher_spinner)
+        val labSpinner = view.findViewById<Spinner>(R.id.lab_spinner)
+
+        // Observar la lista de docentes
+        viewModel.teachers.observe(viewLifecycleOwner) { teachers ->
+            val adapter = ArrayAdapter(
                 requireContext(),
-                { _, year, month, dayOfMonth ->
-                    val selectedDate = Calendar.getInstance()
-                    selectedDate.set(year, month, dayOfMonth)
-                    val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                    editText.setText(format.format(selectedDate.time))
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
+                android.R.layout.simple_spinner_item,
+                teachers.map { it.name }
             )
-            datePicker.show()
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            teacherSpinner.adapter = adapter
         }
 
-        startDateEditText.setOnClickListener { datePickerListener(startDateEditText) }
-        endDateEditText.setOnClickListener { datePickerListener(endDateEditText) }
+        // Observar la lista de laboratorios
+        viewModel.laboratory.observe(viewLifecycleOwner) { laboratories ->
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                laboratories.map { it.name }
+            )
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            labSpinner.adapter = adapter
+        }
+
+        // Observar los registros de acceso
+        viewModel.accessLogs.observe(viewLifecycleOwner) { logs ->
+            updateTable(logs)  // Actualizar la tabla con los registros filtrados
+        }
     }
 
-    private fun setupSpinners() {
-        val teachers = listOf("Todos", "Juan Pérez", "María García")
-        val labs = listOf("Todos", "Lab A", "Lab B")
+    private fun setupDatePicker(editText: TextInputEditText) {
+        editText.setOnClickListener {
+            // Obtener la fecha actual como predeterminada
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        teacherSpinner.adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_dropdown_item,
-            teachers
-        )
+            // Mostrar el DatePickerDialog
+            val datePickerDialog = DatePickerDialog(
+                requireContext(),
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    val formattedDate = "${selectedDay}/${selectedMonth + 1}/${selectedYear}"
+                    editText.setText(formattedDate)
 
-        labSpinner.adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_dropdown_item,
-            labs
-        )
+                    // Convertir la fecha seleccionada a Timestamp
+                    val calendar = Calendar.getInstance()
+                    calendar.set(selectedYear, selectedMonth, selectedDay, 0, 0, 0)
+                    val timestamp = Timestamp(calendar.time)
+
+                    // Filtrar los logs después de seleccionar las fechas
+                    filterAccessLogs()  // Llamar a la función para actualizar los registros
+                },
+                year, month, day
+            )
+            datePickerDialog.show()
+        }
     }
 
-    private fun setupButtons() {
-        filterButton.setOnClickListener { filterRecords() }
-    }
 
-    private fun filterRecords() {
+    private fun filterAccessLogs() {
+        // Obtener las fechas seleccionadas en los EditText
         val startDate = startDateEditText.text.toString()
         val endDate = endDateEditText.text.toString()
-        val selectedTeacher = teacherSpinner.selectedItem.toString()
-        val selectedLab = labSpinner.selectedItem.toString()
 
-        val filteredRecords = records.filter {
-            (startDate.isEmpty() || it.entryTime >= startDate) &&
-                    (endDate.isEmpty() || it.entryTime <= endDate) &&
-                    (selectedTeacher == "Todos" || it.teacherName == selectedTeacher) &&
-                    (selectedLab == "Todos" || it.lab == selectedLab)
-        }
+        // Convertir las fechas seleccionadas a Timestamp
+        val startTimestamp = startDate.toDateTimestamp()
+        val endTimestamp = endDate.toDateTimestamp()
 
-        populateTable(filteredRecords)
+        // Llamar al ViewModel para filtrar los registros
+        viewModel.filterAccessLogs(startTimestamp, endTimestamp)
     }
 
-
-    private fun populateTable(records: List<Record>) {
-        recordsTable.removeViews(1, recordsTable.childCount - 1) // Elimina filas anteriores
-
-        records.forEach { record ->
-            val row = TableRow(requireContext())
-
-            val teacherCell = TextView(requireContext())
-            teacherCell.text = record.teacherName
-            teacherCell.setPadding(8, 8, 8, 8)
-
-            val labCell = TextView(requireContext())
-            labCell.text = record.lab
-            labCell.setPadding(8, 8, 8, 8)
-
-            val entryCell = TextView(requireContext())
-            entryCell.text = record.entryTime
-            entryCell.setPadding(8, 8, 8, 8)
-
-            val exitCell = TextView(requireContext())
-            exitCell.text = record.exitTime
-            exitCell.setPadding(8, 8, 8, 8)
-
-            row.addView(teacherCell)
-            row.addView(labCell)
-            row.addView(entryCell)
-            row.addView(exitCell)
-
-            recordsTable.addView(row)
+    // Extensión para convertir un String con formato dd/MM/yyyy a Timestamp
+    private fun String.toDateTimestamp(): Timestamp? {
+        return try {
+            val format = java.text.SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val date = format.parse(this)
+            date?.let { Timestamp(it) }
+        } catch (e: Exception) {
+            null
         }
     }
 
-    data class Record(
-        val teacherName: String,
-        val lab: String,
-        val entryTime: String,
-        val exitTime: String
-    )
+    private fun updateTable(logs: List<AccessLog>) {
+        // Limpiar la tabla antes de agregar las nuevas filas
+        accessLogsTable.removeAllViews()
+
+        // Iterar sobre los registros de acceso y agregar filas a la tabla
+        logs.forEach { log ->
+            val tableRow = TableRow(requireContext())
+            tableRow.layoutParams = TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.WRAP_CONTENT
+            )
+
+            // Crear las celdas para cada campo del log
+            val entryTimeTextView = TextView(requireContext()).apply {
+                text = log.entryTime.toString()  // Mostrar la hora de entrada
+                setPadding(8, 8, 8, 8)
+            }
+
+            val exitTimeTextView = TextView(requireContext()).apply {
+                text = log.exitTime.toString()  // Mostrar la hora de salida
+                setPadding(8, 8, 8, 8)
+            }
+
+            // Obtener los datos del laboratorio usando el ViewModel
+            val labIdTextView = TextView(requireContext()).apply {
+                log.labId?.let { labRef ->
+                    viewModel.getLaboratoryData(labRef).observe(viewLifecycleOwner) { laboratory ->
+                        text = laboratory?.name ?: "Desconocido"
+                    }
+                }
+                setPadding(8, 8, 8, 8)
+            }
+
+            // Obtener los datos del docente usando el ViewModel
+            val teacherIdTextView = TextView(requireContext()).apply {
+                log.teacherId?.let { teacherRef ->
+                    viewModel.getTeacherData(teacherRef).observe(viewLifecycleOwner) { teacher ->
+                        text = teacher?.name ?: "Desconocido"
+                    }
+                }
+                setPadding(8, 8, 8, 8)
+            }
+
+            // Agregar las celdas a la fila
+            tableRow.addView(entryTimeTextView)
+            tableRow.addView(exitTimeTextView)
+            tableRow.addView(labIdTextView)
+            tableRow.addView(teacherIdTextView)
+
+            // Agregar la fila a la tabla
+            accessLogsTable.addView(tableRow)
+        }
+    }
 }
+

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".view.AccessRegisterFragment">
@@ -22,72 +23,92 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical">
 
-        <EditText
-            android:id="@+id/etNfcId"
-            android:layout_width="100dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilNfcId"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="ID NFC"
-            android:layout_marginTop="8dp"
-            android:inputType="text"
-            android:focusable="false"
-            android:background="@drawable/edit_text_background"/>
+            android:layout_marginTop="2dp"
+            app:hintAnimationEnabled="true"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSimulateScan"
-            android:layout_width="150dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="Simular Escaneo NFC"
             android:layout_marginStart="8dp"
-            android:backgroundTint="@color/black"/>
+            app:iconTint="@android:color/white" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegisterAccess"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="Registrar Acceso"
-            android:layout_marginStart="8dp"
-            android:backgroundTint="@color/black"/>
+            android:layout_marginStart="8dp" />
     </LinearLayout>
 
-    <!-- Tabla de registros -->
-    <ScrollView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp">
+        android:layout_marginTop="40dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
 
-        <TableLayout
-            android:id="@+id/tableLogs"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:stretchColumns="*">
+            android:layout_height="wrap_content">
 
-            <!-- Encabezado -->
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Docente"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Laboratorio"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Entrada"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Salida"
-                    android:textStyle="bold"/>
-            </TableRow>
+            <TableLayout
+                android:id="@+id/tableLogs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*">
 
-        </TableLayout>
-    </ScrollView>
+                <!-- Encabezado -->
+                <TableRow
+                    android:background="?android:attr/selectableItemBackground">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Docente"
+                        android:textStyle="bold"
+                        android:paddingEnd="8dp"
+                        android:paddingStart="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Laboratorio"
+                        android:textStyle="bold"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Entrada"
+                        android:textStyle="bold"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Salida"
+                        android:textStyle="bold"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"/>
+                </TableRow>
+
+            </TableLayout>
+        </ScrollView>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

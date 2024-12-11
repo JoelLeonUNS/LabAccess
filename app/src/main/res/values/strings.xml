@@ -11,4 +11,14 @@
     <string name="title_user_management">Administrar</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="time_slot_array">
+        <item>8:00 - 9:30</item>
+        <item>9:30 - 11:00</item>
+        <item>11:00 - 12:30</item>
+        <item>12:30 - 14:00</item>
+        <item>14:00 - 15:30</item>
+        <item>15:30 - 17:00</item>
+        <item>17:00 - 18:30</item>
+        <item>18:30 - 20:00</item>
+    </string-array>
 </resources>

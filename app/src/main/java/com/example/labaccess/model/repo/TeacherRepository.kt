@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.labaccess.model.data.AccessCard
 import com.example.labaccess.model.data.Teacher
 import com.example.labaccess.model.data.TeacherAccessCard
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -196,6 +197,23 @@ class TeacherRepository {
         } catch (e: Exception) {
             e.printStackTrace()
             false
+        }
+    }
+
+    suspend fun getTeacherData(teacherRef: DocumentReference): Teacher? {
+        return try {
+            // Hacer la consulta a Firestore para obtener el documento del docente
+            val documentSnapshot = teacherRef.get().await()
+            // Verificar si el documento existe
+            if (documentSnapshot.exists()) {
+                // Convertir el documento en un objeto Teacher
+                documentSnapshot.toObject(Teacher::class.java)
+            } else {
+                null // Si el documento no existe, devolver null
+            }
+        } catch (e: Exception) {
+            // Manejar cualquier excepción (por ejemplo, problemas de red)
+            null
         }
     }
     

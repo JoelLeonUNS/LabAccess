@@ -9,13 +9,28 @@
         android:name="com.example.labaccess.view.fragments.AccessCardsFragment"
         android:label="Gestión de tarjetas"/>
     <fragment
-        android:id="@+id/navigation_lab_use"
-        android:name="com.example.labaccess.view.LabUseFragment"
-        android:label="Uso de Laboratorios"
-         />
+        android:id="@+id/navigation_assign_labs"
+        android:name="com.example.labaccess.view.fragments.AssignLabsFragment"
+        android:label="Asignación de Laboratorios"/>
+
     <fragment
         android:id="@+id/navigation_users_management"
         android:name="com.example.labaccess.view.UsersManagementFragment"
         android:label="Gestion de Usuarios"
+        />
+    <fragment
+        android:id="@+id/navigation_access_history"
+        android:name="com.example.labaccess.view.AccessHistoryFragment"
+        android:label="Historial de Accesos"
+        />
+    <fragment
+        android:id="@+id/navigation_lab_usage"
+        android:name="com.example.labaccess.view.LabUseFragment"
+        android:label="Uso de Laboratorios"
+        />
+    <fragment
+        android:id="@+id/navigation_access_register"
+        android:name="com.example.labaccess.view.AccessRegisterFragment"
+        android:label="Registro de Accesos"
         />
 </navigation>

@@ -1,9 +1,13 @@
 package com.example.labaccess.model.data
 
-data class Laboratories(
+data class Laboratory(
     val id: String = "",
     val capacity: Int = 0,
     val description: String = "",
     val name: String = "",
-    val accessCard: List<Assignments> = listOf(),
-)
+    val assignments: List<Assignment> = listOf(),
+){
+    override fun toString(): String {
+        return name
+    }
+}
